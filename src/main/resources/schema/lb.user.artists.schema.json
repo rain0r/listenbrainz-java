@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/UserArtists",
+  "definitions": {
+    "UserArtists": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "$ref": "#/definitions/UserArtistsPayload"
+        }
+      },
+      "required": [
+        "payload"
+      ],
+      "title": "UserArtists"
+    },
+    "UserArtistsPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artists": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserArtist"
+          }
+        },
+        "count": {
+          "type": "integer"
+        },
+        "from_ts": {
+          "type": "integer"
+        },
+        "last_updated": {
+          "type": "integer"
+        },
+        "offset": {
+          "type": "integer"
+        },
+        "range": {
+          "type": "string"
+        },
+        "to_ts": {
+          "type": "integer"
+        },
+        "total_artist_count": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "artists",
+        "count",
+        "from_ts",
+        "last_updated",
+        "offset",
+        "range",
+        "to_ts",
+        "total_artist_count",
+        "user_id"
+      ],
+      "title": "UserArtistsPayload"
+    },
+    "UserArtist": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artist_mbids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "artist_mbid": {
+          "type": "null"
+        },
+        "artist_name": {
+          "type": "string"
+        },
+        "listen_count": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artist_mbids",
+        "artist_mbid",
+        "artist_name",
+        "listen_count"
+      ],
+      "title": "UserArtist"
+    }
+  }
+}

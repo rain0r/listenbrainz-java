@@ -1,0 +1,169 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/SubmitListens",
+  "definitions": {
+    "SubmitListens": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listen_type": {
+          "type": "string",
+          "enum": [
+            "single",
+            "playing_now",
+            "import"
+          ]
+        },
+        "payload": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubmitListen"
+          }
+        }
+      },
+      "required": [
+        "listen_type",
+        "payload"
+      ],
+      "title": "SubmitListens"
+    },
+    "SubmitListen": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listened_at": {
+          "type": "integer"
+        },
+        "track_metadata": {
+          "$ref": "#/definitions/SubmitListensTrackMetadata"
+        }
+      },
+      "required": [
+        "listened_at",
+        "track_metadata"
+      ],
+      "title": "SubmitListen"
+    },
+    "SubmitListensTrackMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "additional_info": {
+          "$ref": "#/definitions/SubmitListensAdditionalInfo"
+        },
+        "artist_name": {
+          "type": "string"
+        },
+        "track_name": {
+          "type": "string"
+        },
+        "release_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "additional_info",
+        "artist_name",
+        "release_name",
+        "track_name"
+      ],
+      "title": "SubmitListensTrackMetadata"
+    },
+    "SubmitListensAdditionalInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "media_player": {
+          "type": "string"
+        },
+        "media_player_version": {
+          "type": "string"
+        },
+        "submission_client": {
+          "type": "string"
+        },
+        "submission_client_version": {
+          "type": "string"
+        },
+        "release_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "track_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "artist_mbids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "work_mbids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "recording_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "release_group_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "duration_ms": {
+          "type": "integer"
+        },
+        "tracknumber": {
+          "type": "integer"
+        },
+        "isrc": {
+          "format": "isrcCode"
+        },
+        "spotify_id": {
+          "type": "string"
+        },
+        "music_service": {
+          "type": "string"
+        },
+        "music_service_name": {
+          "type": "string"
+        },
+        "origin_url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "artist_mbids",
+        "work_mbids",
+        "duration_ms",
+        "tracknumber",
+        "isrc",
+        "spotify_id",
+        "media_player",
+        "media_player_version",
+        "recording_mbid",
+        "release_group_mbid",
+        "release_mbid",
+        "track_mbid",
+        "submission_client",
+        "submission_client_version",
+        "tags",
+        "music_service",
+        "music_service_name",
+        "origin_url"
+      ],
+      "title": "SubmitListensAdditionalInfo"
+    }
+  }
+}

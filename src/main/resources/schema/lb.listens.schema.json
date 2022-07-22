@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/ListensRoot",
+  "definitions": {
+    "ListensRoot": {
+      "type": "object",
+      "description" : "The element is placed at the top-most level of the JSON document.",
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "$ref": "#/definitions/Listens"
+        }
+      },
+      "required": [
+        "payload"
+      ],
+      "title": "ListensRoot"
+    },
+    "Listens": {
+      "type": "object",
+      "description" : "The element is placed at the top-most level of the JSON document.",
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "latest_listen_ts": {
+          "type": "integer"
+        },
+        "listens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Listen"
+          }
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "count",
+        "latest_listen_ts",
+        "listens",
+        "user_id"
+      ],
+      "title": "Listens"
+    },
+    "Listen": {
+      "description" : "The Listen class represents a Listen from ListenBrainz.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inserted_at": {
+          "type": "integer"
+        },
+        "listened_at": {
+          "type": "integer"
+        },
+        "recording_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "track_metadata": {
+          "$ref": "#/definitions/ListensTrackMetadata"
+        },
+        "user_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "inserted_at",
+        "listened_at",
+        "recording_mbid",
+        "track_metadata",
+        "user_name"
+      ],
+      "title": "Listen"
+    },
+    "ListensTrackMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "additional_info": {
+          "$ref": "#/definitions/ListensAdditionalInfo"
+        },
+        "artist_name": {
+          "type": "string"
+        },
+        "mbid_mapping": {
+          "$ref": "#/definitions/ListensMbidMapping"
+        },
+        "release_name": {
+          "type": "string"
+        },
+        "track_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "additional_info",
+        "artist_name",
+        "mbid_mapping",
+        "release_name",
+        "track_name"
+      ],
+      "title": "ListensTrackMetadata"
+    },
+    "ListensAdditionalInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artist_mbids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "artist_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "media_player": {
+          "type": "string"
+        },
+        "recording_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "release_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "release_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "submission_client": {
+          "type": "string"
+        },
+        "submission_client_version": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "track_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "tracknumber": {
+          "type": "string",
+          "format": "integer"
+        }
+      },
+      "required": [
+        "artist_mbids",
+        "artist_mbid",
+        "media_player",
+        "recording_mbid",
+        "release_mbid",
+        "release_mbid",
+        "submission_client",
+        "submission_client_version",
+        "tags",
+        "track_mbid",
+        "tracknumber"
+      ],
+      "title": "ListensAdditionalInfo"
+    },
+    "ListensMbidMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artist_mbids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "recording_mbid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "release_mbid": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "required": [
+        "artist_mbids",
+        "recording_mbid",
+        "release_mbid"
+      ],
+      "title": "ListensMbidMapping"
+    }
+  }
+}

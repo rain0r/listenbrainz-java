@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/ListenCountRoot",
+  "definitions": {
+    "ListenCountRoot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "$ref": "#/definitions/ListenCountPayload"
+        }
+      },
+      "required": [
+        "payload"
+      ],
+      "title": "ListenCountRoot"
+    },
+    "ListenCountPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "count"
+      ],
+      "title": "ListenCountPayload"
+    }
+  }
+}

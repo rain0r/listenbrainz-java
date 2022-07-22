@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/ListenBrainzToken",
+  "definitions": {
+    "ListenBrainzToken": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "valid": {
+          "type": "boolean"
+        },
+        "user_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "user_name",
+        "valid"
+      ],
+      "title": "ListenBrainzToken"
+    }
+  }
+}

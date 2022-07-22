@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/NowPlayingRoot",
+  "definitions": {
+    "NowPlayingRoot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "$ref": "#/definitions/NowPlayingPayload"
+        }
+      },
+      "required": [
+        "payload"
+      ],
+      "title": "NowPlayingRoot"
+    },
+    "NowPlayingPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "listens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NowPlayingListen"
+          }
+        },
+        "playing_now": {
+          "type": "boolean"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "count",
+        "listens",
+        "playing_now",
+        "user_id"
+      ],
+      "title": "NowPlayingPayload"
+    },
+    "NowPlayingListen": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "playing_now": {
+          "type": "boolean"
+        },
+        "track_metadata": {
+          "$ref": "#/definitions/NowPlayingTrackMetadata"
+        }
+      },
+      "required": [
+        "playing_now",
+        "track_metadata"
+      ],
+      "title": "NowPlayingListen"
+    },
+    "NowPlayingTrackMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "additional_info": {
+          "$ref": "#/definitions/NowPlayingAdditionalInfo"
+        },
+        "artist_name": {
+          "type": "string"
+        },
+        "release_name": {
+          "type": "string"
+        },
+        "track_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "additional_info",
+        "artist_name",
+        "release_name",
+        "track_name"
+      ],
+      "title": "NowPlayingTrackMetadata"
+    },
+    "NowPlayingAdditionalInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "NowPlayingAdditionalInfo"
+    }
+  }
+}

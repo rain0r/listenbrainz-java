@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/UserRecordings",
+  "definitions": {
+    "UserRecordings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "$ref": "#/definitions/UserRecordingsPayload"
+        }
+      },
+      "required": [
+        "payload"
+      ],
+      "title": "UserRecordings"
+    },
+    "UserRecordingsPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "from_ts": {
+          "type": "integer"
+        },
+        "last_updated": {
+          "type": "integer"
+        },
+        "offset": {
+          "type": "integer"
+        },
+        "range": {
+          "type": "string"
+        },
+        "recordings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserRecording"
+          }
+        },
+        "to_ts": {
+          "type": "integer"
+        },
+        "total_recording_count": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "count",
+        "from_ts",
+        "last_updated",
+        "offset",
+        "range",
+        "recordings",
+        "to_ts",
+        "total_recording_count",
+        "user_id"
+      ],
+      "title": "UserRecordingsPayload"
+    },
+    "UserRecording": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artist_mbids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "artist_msid": {
+          "type": "null"
+        },
+        "artist_name": {
+          "type": "string"
+        },
+        "listen_count": {
+          "type": "integer"
+        },
+        "recording_mbid": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "format": "uuid"
+            }
+          ]
+        },
+        "recording_msid": {
+          "type": "null"
+        },
+        "release_mbid": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "format": "uuid"
+            }
+          ]
+        },
+        "release_msid": {
+          "type": "null"
+        },
+        "release_name": {
+          "type": "string"
+        },
+        "track_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "artist_mbids",
+        "artist_msid",
+        "artist_name",
+        "listen_count",
+        "recording_mbid",
+        "recording_msid",
+        "release_mbid",
+        "release_msid",
+        "release_name",
+        "track_name"
+      ],
+      "title": "UserRecording"
+    }
+  }
+}
