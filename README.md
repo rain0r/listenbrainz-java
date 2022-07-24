@@ -1,8 +1,6 @@
-The ListenBrainz API bindings for java are wrapper for
-the [ListenBrainz API](https://listenbrainz.readthedocs.io/en/latest/) and the ListenBrainz
-submission service (_scrobbling_).
+This is ja java wrapper for the the [ListenBrainz API](https://listenbrainz.readthedocs.io/en/latest/).
 
-It provides classes and methods to invoke ListenBrainz API methods from within Java applications.
+It supports retrieving and submitting data (_scrobbling_).
 
 ## Usage
 
