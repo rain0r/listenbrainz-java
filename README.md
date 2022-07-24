@@ -26,6 +26,6 @@ lbService.submitPlayingNow("artist", "title");
 <dependency>
   <groupId>org.hihn</groupId>
   <artifactId>listenbrainz-java</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.3</version>
 </dependency>
 ```
