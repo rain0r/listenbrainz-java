@@ -6,12 +6,16 @@ It supports retrieving and submitting data (_scrobbling_).
 
 ## Usage
 
+To get the listens of a user and log them:
+
 ```java
 LbService lbService = new LbService();
 lbService.getListens("my-username").ifPresent(d -> LOG.info(d.getPayload()));
 ```
 
-All methods that submit data to the ListenBrainz server need a valid user token:
+All methods that submit data to the ListenBrainz server need a valid user token.
+This can be passed to the constructor:
+
 
 ```java
 LbService lbService = new LbService("auth-token");
