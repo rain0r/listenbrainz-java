@@ -19,6 +19,9 @@ import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
+/**
+ * Defines request methods for the ListenBrainz api endpoints.
+ */
 public interface LbEndPoints {
 
 	@GET("/1/validate-token")

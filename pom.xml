@@ -158,7 +158,6 @@
         <version>3.4.0</version>
         <configuration>
           <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
           <doclint>none</doclint>
         </configuration>
       </plugin>
@@ -235,26 +234,12 @@
               </execution>
             </executions>
           </plugin>
-          <!--
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-release-plugin</artifactId>
-            <version>2.5.3</version>
-            <configuration>
-              <autoVersionSubmodules>true</autoVersionSubmodules>
-              <useReleaseProfile>false</useReleaseProfile>
-              <releaseProfiles>release</releaseProfiles>
-              <goals>deploy</goals>
-            </configuration>
-          </plugin>
--->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.4.0</version>
             <configuration>
               <source>${maven.compiler.source}</source>
-              <target>${maven.compiler.target}</target>
               <doclint>none</doclint>
             </configuration>
           </plugin>

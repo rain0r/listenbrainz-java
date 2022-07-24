@@ -1,12 +1,21 @@
 package org.hihn.listenbrainz;
 
-import org.hihn.listenbrainz.lb.*;
+import java.util.List;
+import java.util.Optional;
+import org.hihn.listenbrainz.lb.Listens;
+import org.hihn.listenbrainz.lb.ListensRoot;
+import org.hihn.listenbrainz.lb.NowPlayingTrackMetadata;
+import org.hihn.listenbrainz.lb.SubmitListen;
+import org.hihn.listenbrainz.lb.UserArtistsPayload;
+import org.hihn.listenbrainz.lb.UserRecommendationRecordingsPayload;
+import org.hihn.listenbrainz.lb.UserRecordingsPayload;
+import org.hihn.listenbrainz.lb.UserRelease;
 import org.hihn.listenbrainz.model.ArtistType;
 import org.hihn.listenbrainz.model.TimeRange;
 
-import java.util.List;
-import java.util.Optional;
-
+/**
+ * Interface that defines all methods needed to use the ListenBrainz api.
+ */
 public interface ListenBrainzService {
 
 	// Get Listens

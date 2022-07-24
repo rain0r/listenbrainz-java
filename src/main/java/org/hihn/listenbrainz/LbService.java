@@ -1,11 +1,5 @@
 package org.hihn.listenbrainz;
 
-import static org.hihn.listenbrainz.api.QueryParameter.COUNT;
-import static org.hihn.listenbrainz.api.QueryParameter.MAX_TS;
-import static org.hihn.listenbrainz.api.QueryParameter.MIN_TS;
-import static org.hihn.listenbrainz.api.QueryParameter.OFFSET;
-import static org.hihn.listenbrainz.api.QueryParameter.TIME_RANGE;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +10,9 @@ import okhttp3.OkHttpClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hihn.listenbrainz.api.LbEndPoints;
+import org.hihn.listenbrainz.api.QueryParameter;
 import org.hihn.listenbrainz.interceptor.LoggingInterceptor;
+import org.hihn.listenbrainz.interceptor.RateLimitInterceptor;
 import org.hihn.listenbrainz.lb.ListenBrainzToken;
 import org.hihn.listenbrainz.lb.ListenCountPayload;
 import org.hihn.listenbrainz.lb.ListensRoot;
@@ -24,6 +20,7 @@ import org.hihn.listenbrainz.lb.NowPlayingRoot;
 import org.hihn.listenbrainz.lb.NowPlayingTrackMetadata;
 import org.hihn.listenbrainz.lb.SubmitListen;
 import org.hihn.listenbrainz.lb.SubmitListens;
+import org.hihn.listenbrainz.lb.SubmitListens.ListenType;
 import org.hihn.listenbrainz.lb.SubmitListensTrackMetadata;
 import org.hihn.listenbrainz.lb.SubmitResponse;
 import org.hihn.listenbrainz.lb.UserArtistsPayload;
@@ -36,6 +33,9 @@ import org.hihn.listenbrainz.model.TimeRange;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Service that provides methods to communicate with the ListenBrainz api.
+ */
 public class LbService implements ListenBrainzService {
 
 	private static final Logger LOG = LogManager.getLogger(LoggingInterceptor.class);
@@ -63,6 +63,7 @@ public class LbService implements ListenBrainzService {
 		else {
 			setAuthToken(authToken);
 		}
+
 	}
 
 	@Override
@@ -75,8 +76,8 @@ public class LbService implements ListenBrainzService {
 			int count) {
 		try {
 			Map<String, String> options = new HashMap<>();
-			maxTs.ifPresent(ts -> options.put(MAX_TS, String.valueOf(ts)));
-			minTs.ifPresent(ts -> options.put(MIN_TS, String.valueOf(ts)));
+			maxTs.ifPresent(ts -> options.put(QueryParameter.MAX_TS, String.valueOf(ts)));
+			minTs.ifPresent(ts -> options.put(QueryParameter.MIN_TS, String.valueOf(ts)));
 			options.put("count", String.valueOf(count));
 			return Optional
 					.ofNullable(lbEndPoints.getListens("/1/user/" + username + "/listens", options).execute().body());
@@ -112,9 +113,9 @@ public class LbService implements ListenBrainzService {
 	public Optional<UserArtistsPayload> getUserArtists(String username, int count, int offset, TimeRange timeRange) {
 		try {
 			Map<String, String> options = new HashMap<>();
-			options.put(OFFSET, String.valueOf(offset));
-			options.put(TIME_RANGE, timeRange.getValue());
-			options.put(COUNT, String.valueOf(count));
+			options.put(QueryParameter.OFFSET, String.valueOf(offset));
+			options.put(QueryParameter.TIME_RANGE, timeRange.getValue());
+			options.put(QueryParameter.COUNT, String.valueOf(count));
 			return Optional.ofNullable(
 					lbEndPoints.getUserArtists("/1/user/" + username + "/listens", options).execute().body());
 		}
@@ -150,8 +151,8 @@ public class LbService implements ListenBrainzService {
 			ArtistType artistType, int count, int offset) {
 		try {
 			Map<String, String> options = new HashMap<>();
-			options.put(OFFSET, String.valueOf(offset));
-			options.put(COUNT, String.valueOf(count));
+			options.put(QueryParameter.OFFSET, String.valueOf(offset));
+			options.put(QueryParameter.COUNT, String.valueOf(count));
 			String url = "1/cf/recommendation/user/" + username + "/recording?artist_type=" + artistType.getValue();
 			UserRecommendationRecordingsPayload payload = lbEndPoints.getUserRecommendationRecordings(url, options)
 					.execute().body();
@@ -173,9 +174,9 @@ public class LbService implements ListenBrainzService {
 			TimeRange timeRange) {
 		try {
 			Map<String, String> options = new HashMap<>();
-			options.put(OFFSET, String.valueOf(offset));
-			options.put(TIME_RANGE, timeRange.getValue());
-			options.put(COUNT, String.valueOf(count));
+			options.put(QueryParameter.OFFSET, String.valueOf(offset));
+			options.put(QueryParameter.TIME_RANGE, timeRange.getValue());
+			options.put(QueryParameter.COUNT, String.valueOf(count));
 			UserRecordingsPayload payload = lbEndPoints
 					.getUserRecordings("1/stats/user/" + username + "/recordings", options).execute().body();
 			return Optional.ofNullable(payload);
@@ -196,9 +197,9 @@ public class LbService implements ListenBrainzService {
 		List<UserRelease> ret = new ArrayList<>();
 		try {
 			Map<String, String> options = new HashMap<>();
-			options.put(OFFSET, String.valueOf(offset));
-			options.put(TIME_RANGE, timeRange.getValue());
-			options.put(COUNT, String.valueOf(count));
+			options.put(QueryParameter.OFFSET, String.valueOf(offset));
+			options.put(QueryParameter.TIME_RANGE, timeRange.getValue());
+			options.put(QueryParameter.COUNT, String.valueOf(count));
 
 			UserReleases releases = lbEndPoints.getUserReleases("1/stats/user/" + username + "/recordings", options)
 					.execute().body();
@@ -214,6 +215,9 @@ public class LbService implements ListenBrainzService {
 
 	@Override
 	public boolean isTokenValid() {
+		if (getAuthToken() == null || !getAuthToken().trim().isEmpty()) {
+			throw new IllegalStateException("No auth token set - can't post data to ListenBrainz.");
+		}
 		try {
 			ListenBrainzToken token = lbEndPoints.validateToken(buildAuthTokenHeader()).execute().body();
 			setToken(token);
@@ -227,7 +231,7 @@ public class LbService implements ListenBrainzService {
 
 	@Override
 	public void submitMultipleListens(List<SubmitListen> listens) {
-		listens.forEach(this::submitSingleListen);
+		postSubmitListens(listens, ListenType.IMPORT);
 	}
 
 	@Override
@@ -243,17 +247,7 @@ public class LbService implements ListenBrainzService {
 
 	@Override
 	public void submitPlayingNow(SubmitListen submitListen) {
-		try {
-			SubmitListens submitListens = new SubmitListens();
-			submitListens.setListenType(SubmitListens.ListenType.PLAYING_NOW);
-			submitListens.setPayload(List.of(submitListen));
-
-			SubmitResponse response = lbEndPoints.submitListens(buildAuthTokenHeader(), submitListens).execute().body();
-			LOG.trace("Scrobble response: {} ", response);
-		}
-		catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-		}
+		postSubmitListens(List.of(submitListen), ListenType.PLAYING_NOW);
 	}
 
 	@Override
@@ -268,11 +262,23 @@ public class LbService implements ListenBrainzService {
 
 	@Override
 	public void submitSingleListen(SubmitListen submitListen) {
+		postSubmitListens(List.of(submitListen), ListenType.SINGLE);
+	}
+
+	private void postSubmitListens(List<SubmitListen> listens, SubmitListens.ListenType listenType) {
+		if (getAuthToken() == null || !getAuthToken().trim().isEmpty()) {
+			throw new IllegalStateException("No auth token set - can't post data to ListenBrainz.");
+		}
 		try {
 			SubmitListens submitListens = new SubmitListens();
-			submitListens.setListenType(SubmitListens.ListenType.SINGLE);
-			submitListens.setPayload(List.of(submitListen));
+			submitListens.setListenType(listenType);
+			submitListens.setPayload(listens);
 
+			// Call<SubmitResponse> a = lbEndPoints.submitListens(buildAuthTokenHeader(),
+			// submitListens);
+			// Response<SubmitResponse> b = a.execute();
+			// Headers c = b.headers();
+			// c.get()
 			SubmitResponse response = lbEndPoints.submitListens(buildAuthTokenHeader(), submitListens).execute().body();
 			LOG.trace("Scrobble response: {} ", response);
 		}
@@ -284,6 +290,7 @@ public class LbService implements ListenBrainzService {
 	private Retrofit buildRetrofit() {
 		return new Retrofit.Builder().baseUrl(ROOT_URL).addConverterFactory(GsonConverterFactory.create())
 				.client(new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor())
+						.addInterceptor(new RateLimitInterceptor())
 						.addNetworkInterceptor(chain -> chain.proceed(chain.request())).build())
 				.build();
 	}
