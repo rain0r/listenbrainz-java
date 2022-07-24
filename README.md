@@ -1,4 +1,4 @@
-This is ja java wrapper for the the [ListenBrainz API](https://listenbrainz.readthedocs.io/en/latest/).
+This is a java wrapper for the the [ListenBrainz API](https://listenbrainz.readthedocs.io/en/latest/).
 
 It supports retrieving and submitting data (_scrobbling_).
 
