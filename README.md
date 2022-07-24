@@ -4,6 +4,21 @@ submission service (_scrobbling_).
 
 It provides classes and methods to invoke ListenBrainz API methods from within Java applications.
 
+## Usage
+
+```java
+LbService lbService = new LbService();
+lbService.getListens("my-username").ifPresent(d -> LOG.info(d.getPayload()));
+```
+
+All methods that submit data to the ListenBrainz server need a valid user token:
+
+```java
+LbService lbService = new LbService("auth-token");
+lbService.submitPlayingNow("artist", "title");
+```
+
+
 ## Maven
 
 ```xml
