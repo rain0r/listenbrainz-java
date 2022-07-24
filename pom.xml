@@ -28,8 +28,8 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:git:https://github.com/rain0r/listenbrainz-java.git</connection>
-    <developerConnection>scm:git:ssh://github.com/rain0r/listenbrainz-java.git
+    <connection>scm:git:ssh://git@github.com/rain0r/listenbrainz-java.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/rain0r/listenbrainz-java.git
     </developerConnection>
     <url>https://github.com/rain0r/listenbrainz-java</url>
     <tag>HEAD</tag>
