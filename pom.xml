@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.hihn</groupId>
   <artifactId>listenbrainz-java</artifactId>
-  <version>1.1.4-SNAPSHOT</version>
+  <version>1.1.4</version>
   <name>listenbrainz-java</name>
   <url>https://github.com/rain0r/listenbrainz-java</url>
   <description>Java bindings for the listenbrainz.org webservice API</description>
@@ -30,7 +30,7 @@
     <developerConnection>scm:git:ssh://git@github.com/rain0r/listenbrainz-java.git
     </developerConnection>
     <url>https://github.com/rain0r/listenbrainz-java</url>
-    <tag>HEAD</tag>
+    <tag>listenbrainz-java-1.1.4</tag>
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
