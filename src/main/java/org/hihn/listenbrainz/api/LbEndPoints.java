@@ -1,23 +1,10 @@
 package org.hihn.listenbrainz.api;
 
-import java.util.Map;
-import org.hihn.listenbrainz.lb.ListenBrainzToken;
-import org.hihn.listenbrainz.lb.ListenCountPayload;
-import org.hihn.listenbrainz.lb.ListensRoot;
-import org.hihn.listenbrainz.lb.NowPlayingRoot;
-import org.hihn.listenbrainz.lb.SubmitListens;
-import org.hihn.listenbrainz.lb.SubmitResponse;
-import org.hihn.listenbrainz.lb.UserArtistsPayload;
-import org.hihn.listenbrainz.lb.UserRecommendationRecordingsPayload;
-import org.hihn.listenbrainz.lb.UserRecordingsPayload;
-import org.hihn.listenbrainz.lb.UserReleases;
+import org.hihn.listenbrainz.lb.*;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.POST;
-import retrofit2.http.QueryMap;
-import retrofit2.http.Url;
+import retrofit2.http.*;
+
+import java.util.Map;
 
 /**
  * Defines request methods for the ListenBrainz api endpoints.

@@ -1,11 +1,12 @@
 package org.hihn.listenbrainz.interceptor;
 
-import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 public class LoggingInterceptor implements Interceptor {
 

@@ -1,11 +1,5 @@
 package org.hihn.listenbrainz;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import okhttp3.OkHttpClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,25 +7,15 @@ import org.hihn.listenbrainz.api.LbEndPoints;
 import org.hihn.listenbrainz.api.QueryParameter;
 import org.hihn.listenbrainz.interceptor.LoggingInterceptor;
 import org.hihn.listenbrainz.interceptor.RateLimitInterceptor;
-import org.hihn.listenbrainz.lb.ListenBrainzToken;
-import org.hihn.listenbrainz.lb.ListenCountPayload;
-import org.hihn.listenbrainz.lb.ListensRoot;
-import org.hihn.listenbrainz.lb.NowPlayingRoot;
-import org.hihn.listenbrainz.lb.NowPlayingTrackMetadata;
-import org.hihn.listenbrainz.lb.SubmitListen;
-import org.hihn.listenbrainz.lb.SubmitListens;
+import org.hihn.listenbrainz.lb.*;
 import org.hihn.listenbrainz.lb.SubmitListens.ListenType;
-import org.hihn.listenbrainz.lb.SubmitListensTrackMetadata;
-import org.hihn.listenbrainz.lb.SubmitResponse;
-import org.hihn.listenbrainz.lb.UserArtistsPayload;
-import org.hihn.listenbrainz.lb.UserRecommendationRecordingsPayload;
-import org.hihn.listenbrainz.lb.UserRecordingsPayload;
-import org.hihn.listenbrainz.lb.UserRelease;
-import org.hihn.listenbrainz.lb.UserReleases;
 import org.hihn.listenbrainz.model.ArtistType;
 import org.hihn.listenbrainz.model.TimeRange;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Service that provides methods to communicate with the ListenBrainz api.
@@ -67,20 +51,27 @@ public class LbService implements ListenBrainzService {
 	}
 
 	@Override
-	public Optional<ListensRoot> getListens(String username) {
-		return getListens(username, Optional.empty(), Optional.empty(), DEFAULT_COUNT);
+	public Optional<Listens> getListens(String username) {
+		try {
+			Map<String, String> options = new HashMap<>();
+			return Optional.ofNullable(
+					lbEndPoints.getListens("/1/user/" + username + "/listens", options).execute().body().getPayload());
+		}
+		catch (IOException e) {
+			LOG.error(e.getMessage(), e);
+			return Optional.empty();
+		}
 	}
 
 	@Override
-	public Optional<ListensRoot> getListens(String username, Optional<Integer> maxTs, Optional<Integer> minTs,
-			int count) {
+	public Optional<Listens> getListens(String username, int maxTs, int minTs, int count) {
 		try {
 			Map<String, String> options = new HashMap<>();
-			maxTs.ifPresent(ts -> options.put(QueryParameter.MAX_TS, String.valueOf(ts)));
-			minTs.ifPresent(ts -> options.put(QueryParameter.MIN_TS, String.valueOf(ts)));
-			options.put("count", String.valueOf(count));
-			return Optional
-					.ofNullable(lbEndPoints.getListens("/1/user/" + username + "/listens", options).execute().body());
+			options.put(QueryParameter.MAX_TS, String.valueOf(maxTs));
+			options.put(QueryParameter.MIN_TS, String.valueOf(minTs));
+			options.put(QueryParameter.COUNT, String.valueOf(count));
+			return Optional.ofNullable(
+					lbEndPoints.getListens("/1/user/" + username + "/listens", options).execute().body().getPayload());
 		}
 		catch (IOException e) {
 			LOG.error(e.getMessage(), e);

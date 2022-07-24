@@ -1,17 +1,11 @@
 package org.hihn.listenbrainz;
 
-import java.util.List;
-import java.util.Optional;
-import org.hihn.listenbrainz.lb.Listens;
-import org.hihn.listenbrainz.lb.ListensRoot;
-import org.hihn.listenbrainz.lb.NowPlayingTrackMetadata;
-import org.hihn.listenbrainz.lb.SubmitListen;
-import org.hihn.listenbrainz.lb.UserArtistsPayload;
-import org.hihn.listenbrainz.lb.UserRecommendationRecordingsPayload;
-import org.hihn.listenbrainz.lb.UserRecordingsPayload;
-import org.hihn.listenbrainz.lb.UserRelease;
+import org.hihn.listenbrainz.lb.*;
 import org.hihn.listenbrainz.model.ArtistType;
 import org.hihn.listenbrainz.model.TimeRange;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Interface that defines all methods needed to use the ListenBrainz api.
@@ -25,7 +19,7 @@ public interface ListenBrainzService {
 	 * @param username ListenBrainz username for the user to query.
 	 * @return An Optional, that contains the {@link Listens} data of the user.
 	 */
-	Optional<ListensRoot> getListens(String username);
+	Optional<Listens> getListens(String username);
 
 	/**
 	 * Get listens for user <code>username</code>.
@@ -42,7 +36,7 @@ public interface ListenBrainzService {
 	 * @param count The number of listens to return. Defaults to 25, maximum is 100.
 	 * @return A list of listens for the user <code>username</code>.
 	 */
-	Optional<ListensRoot> getListens(String username, Optional<Integer> maxTs, Optional<Integer> minTs, int count);
+	Optional<Listens> getListens(String username, int maxTs, int minTs, int count);
 
 	/**
 	 * Get the listen being played right now for user <code>username</code>.
