@@ -206,7 +206,7 @@ public class LbService implements ListenBrainzService {
 
 	@Override
 	public boolean isTokenValid() {
-		if (getAuthToken() == null || !getAuthToken().trim().isEmpty()) {
+		if (getAuthToken() == null || getAuthToken().trim().isEmpty()) {
 			throw new IllegalStateException("No auth token set - can't post data to ListenBrainz.");
 		}
 		try {
@@ -257,19 +257,13 @@ public class LbService implements ListenBrainzService {
 	}
 
 	private void postSubmitListens(List<SubmitListen> listens, SubmitListens.ListenType listenType) {
-		if (getAuthToken() == null || !getAuthToken().trim().isEmpty()) {
+		if (getAuthToken() == null || getAuthToken().trim().isEmpty()) {
 			throw new IllegalStateException("No auth token set - can't post data to ListenBrainz.");
 		}
 		try {
 			SubmitListens submitListens = new SubmitListens();
 			submitListens.setListenType(listenType);
 			submitListens.setPayload(listens);
-
-			// Call<SubmitResponse> a = lbEndPoints.submitListens(buildAuthTokenHeader(),
-			// submitListens);
-			// Response<SubmitResponse> b = a.execute();
-			// Headers c = b.headers();
-			// c.get()
 			SubmitResponse response = lbEndPoints.submitListens(buildAuthTokenHeader(), submitListens).execute().body();
 			LOG.trace("Scrobble response: {} ", response);
 		}
