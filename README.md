@@ -10,7 +10,7 @@ To get the listens of a user and log them:
 
 ```java
 LbService lbService = new LbService();
-lbService.getListens("my-username").ifPresent(d -> LOG.info(d.getPayload()));
+lbService.getListens("my-username").ifPresent(d -> LOG.info(d.getListens()));
 ```
 
 All methods that submit data to the ListenBrainz server need a valid user token.
