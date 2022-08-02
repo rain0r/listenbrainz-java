@@ -18,7 +18,11 @@ public interface LbEndPoints {
 	Call<ListensRoot> getListens(@Url String url, @QueryMap Map<String, String> options);
 
 	@POST("/1/submit-listens")
-	Call<SubmitResponse> submitListens(@Header("Authorization") String token, @Body SubmitListens submitListen);
+	Call<SubmitResponse> submitListenNow(@Header("Authorization") String token, @Body SubmitListens submitListen);
+
+	@POST("/1/submit-listens")
+	Call<SubmitResponse> submitListenNow(@Header("Authorization") String token,
+			@Body SubmitListensNow submitListensNow);
 
 	@GET()
 	Call<NowPlayingRoot> getPlayingNow(@Url String url);

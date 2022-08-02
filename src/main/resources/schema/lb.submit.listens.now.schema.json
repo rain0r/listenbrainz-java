@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/SubmitListensNow",
+  "definitions": {
+    "SubmitListensNow": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listen_type": {
+          "$ref": "lb.submit.listens.schema.json#/definitions/SubmitListens/properties/listen_type"
+        },
+        "payload": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubmitListenNow"
+          }
+        }
+      },
+      "required": [
+        "listen_type",
+        "payload"
+      ],
+      "title": "SubmitListensNow"
+    },
+    "SubmitListenNow": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "track_metadata": {
+          "$ref": "lb.submit.listens.schema.json#/definitions/SubmitListensTrackMetadata"
+        }
+      },
+      "required": [
+        "track_metadata"
+      ],
+      "title": "SubmitListen"
+    }
+  }
+}

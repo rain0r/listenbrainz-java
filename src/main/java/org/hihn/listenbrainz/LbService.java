@@ -232,13 +232,31 @@ public class LbService implements ListenBrainzService {
 
 	@Override
 	public void submitPlayingNow(String artist, String title, String album) {
-		int unixTime = Math.toIntExact(System.currentTimeMillis() / 1000L);
-		submitPlayingNow(buildSubmitListen(artist, title, album, unixTime));
+		SubmitListensTrackMetadata submitListensTrackMetadata = buildSubmitListensTrackMetadata(artist, title, album);
+		SubmitListenNow submitListenNow = new SubmitListenNow(submitListensTrackMetadata);
+		List<SubmitListenNow> payload = List.of(submitListenNow);
+		submitPlayingNow(payload);
 	}
 
 	@Override
-	public void submitPlayingNow(SubmitListen submitListen) {
-		postSubmitListens(List.of(submitListen), ListenType.PLAYING_NOW);
+	public void submitPlayingNow(List<SubmitListenNow> submitListenNows) {
+		postSubmitListensNow(submitListenNows);
+	}
+
+	private void postSubmitListensNow(List<SubmitListenNow> submitListensNows) {
+		if (getAuthToken() == null || getAuthToken().trim().isEmpty()) {
+			throw new IllegalStateException("No auth token set - can't post data to ListenBrainz.");
+		}
+		try {
+			SubmitListensNow submitListens = new SubmitListensNow(SubmitListensNow.ListenType.PLAYING_NOW,
+					submitListensNows);
+			SubmitResponse response = lbEndPoints.submitListenNow(buildAuthTokenHeader(), submitListens).execute()
+					.body();
+			LOG.trace("Scrobble response: {} ", response);
+		}
+		catch (IOException e) {
+			LOG.error(e.getMessage(), e);
+		}
 	}
 
 	@Override
@@ -261,10 +279,9 @@ public class LbService implements ListenBrainzService {
 			throw new IllegalStateException("No auth token set - can't post data to ListenBrainz.");
 		}
 		try {
-			SubmitListens submitListens = new SubmitListens();
-			submitListens.setListenType(listenType);
-			submitListens.setPayload(listens);
-			SubmitResponse response = lbEndPoints.submitListens(buildAuthTokenHeader(), submitListens).execute().body();
+			SubmitListens submitListens = new SubmitListens(listenType, listens);
+			SubmitResponse response = lbEndPoints.submitListenNow(buildAuthTokenHeader(), submitListens).execute()
+					.body();
 			LOG.trace("Scrobble response: {} ", response);
 		}
 		catch (IOException e) {
@@ -285,14 +302,19 @@ public class LbService implements ListenBrainzService {
 	}
 
 	private SubmitListen buildSubmitListen(String artist, String title, String album, int listenedAt) {
-		SubmitListensTrackMetadata metadata = new SubmitListensTrackMetadata();
-		metadata.setTrackName(title);
-		metadata.setArtistName(artist);
-		metadata.setReleaseName(album);
+		SubmitListensTrackMetadata metadata = buildSubmitListensTrackMetadata(artist, title, album);
 		SubmitListen submitListen = new SubmitListen();
 		submitListen.setListenedAt(listenedAt);
 		submitListen.setTrackMetadata(metadata);
 		return submitListen;
+	}
+
+	private SubmitListensTrackMetadata buildSubmitListensTrackMetadata(String artist, String title, String album) {
+		SubmitListensTrackMetadata metadata = new SubmitListensTrackMetadata();
+		metadata.setTrackName(title);
+		metadata.setArtistName(artist);
+		metadata.setReleaseName(album);
+		return metadata;
 	}
 
 	public ListenBrainzToken getToken() {

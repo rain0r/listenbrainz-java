@@ -121,10 +121,10 @@ public interface ListenBrainzService {
 	 * <p>
 	 * Requires that the auth token for the user whose data is being submitted has been
 	 * set.
-	 * @param listen The {@link SubmitListen} to be submitted, the listen should NOT have
-	 * a <code>listenedAt</code> attribute
+	 * @param submitListen The {@link SubmitListensNow} to be submitted, the listen should
+	 * NOT have a <code>listenedAt</code> attribute
 	 */
-	void submitPlayingNow(SubmitListen listen);
+	void submitPlayingNow(List<SubmitListenNow> submitListen);
 
 	// User info
 
