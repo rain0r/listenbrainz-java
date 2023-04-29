@@ -145,9 +145,9 @@ public class LbService implements ListenBrainzService {
 			options.put(QueryParameter.OFFSET, String.valueOf(offset));
 			options.put(QueryParameter.COUNT, String.valueOf(count));
 			String url = "1/cf/recommendation/user/" + username + "/recording?artist_type=" + artistType.getValue();
-			UserRecommendationRecordingsPayload payload = lbEndPoints.getUserRecommendationRecordings(url, options)
+			UserRecommendationRecordings recordings = lbEndPoints.getUserRecommendationRecordings(url, options)
 					.execute().body();
-			return Optional.ofNullable(payload);
+			return Optional.ofNullable(recordings.getPayload());
 		}
 		catch (IOException | NullPointerException e) {
 			LOG.error(e.getMessage(), e);

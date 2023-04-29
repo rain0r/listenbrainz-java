@@ -31,7 +31,7 @@ public interface LbEndPoints {
 	Call<UserArtistsPayload> getUserArtists(@Url String url, @QueryMap Map<String, String> options);
 
 	@GET()
-	Call<UserRecommendationRecordingsPayload> getUserRecommendationRecordings(@Url String url,
+	Call<UserRecommendationRecordings> getUserRecommendationRecordings(@Url String url,
 			@QueryMap Map<String, String> options);
 
 	@GET()
