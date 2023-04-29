@@ -35,12 +35,12 @@ public interface LbEndPoints {
 			@QueryMap Map<String, String> options);
 
 	@GET()
-	Call<UserRecordingsPayload> getUserRecordings(@Url String url, @QueryMap Map<String, String> options);
+	Call<UserRecordings> getUserRecordings(@Url String url, @QueryMap Map<String, String> options);
 
 	@GET()
 	Call<UserReleases> getUserReleases(@Url String url, @QueryMap Map<String, String> options);
 
 	@GET()
-	Call<ListenCountPayload> getUserListenCount(@Url String url);
+	Call<ListenCount> getUserListenCount(@Url String url);
 
 }

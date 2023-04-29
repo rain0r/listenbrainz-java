@@ -107,8 +107,8 @@ public class LbService implements ListenBrainzService {
 			options.put(QueryParameter.OFFSET, String.valueOf(offset));
 			options.put(QueryParameter.TIME_RANGE, timeRange.getValue());
 			options.put(QueryParameter.COUNT, String.valueOf(count));
-			return Optional.ofNullable(
-					lbEndPoints.getUserArtists("/1/user/" + username + "/listens", options).execute().body());
+			return Optional
+				.ofNullable(lbEndPoints.getUserArtists("/1/user/" + username + "/listens", options).execute().body());
 		}
 		catch (IOException e) {
 			LOG.error(e.getMessage(), e);
@@ -119,12 +119,14 @@ public class LbService implements ListenBrainzService {
 	@Override
 	public int getUserListenCount(String username) {
 		try {
-			ListenCountPayload listenCount = lbEndPoints.getUserListenCount("/1/user/" + username + "/listen-count")
-					.execute().body();
-			if (listenCount != null) {
-				return listenCount.getCount();
+			ListenCount listenCount = lbEndPoints.getUserListenCount("/1/user/" + username + "/listen-count")
+				.execute()
+				.body();
+			if (listenCount == null) {
+				LOG.error("Could not get UserListenCount");
+				return 0;
 			}
-			return 0;
+			return listenCount.getPayload().getCount();
 		}
 		catch (IOException e) {
 			LOG.error(e.getMessage(), e);
@@ -146,7 +148,8 @@ public class LbService implements ListenBrainzService {
 			options.put(QueryParameter.COUNT, String.valueOf(count));
 			String url = "1/cf/recommendation/user/" + username + "/recording?artist_type=" + artistType.getValue();
 			UserRecommendationRecordings recordings = lbEndPoints.getUserRecommendationRecordings(url, options)
-					.execute().body();
+				.execute()
+				.body();
 			return Optional.ofNullable(recordings.getPayload());
 		}
 		catch (IOException | NullPointerException e) {
@@ -168,9 +171,15 @@ public class LbService implements ListenBrainzService {
 			options.put(QueryParameter.OFFSET, String.valueOf(offset));
 			options.put(QueryParameter.TIME_RANGE, timeRange.getValue());
 			options.put(QueryParameter.COUNT, String.valueOf(count));
-			UserRecordingsPayload payload = lbEndPoints
-					.getUserRecordings("1/stats/user/" + username + "/recordings", options).execute().body();
-			return Optional.ofNullable(payload);
+			UserRecordings recordings = lbEndPoints
+				.getUserRecordings("1/stats/user/" + username + "/recordings", options)
+				.execute()
+				.body();
+			if (recordings == null) {
+				LOG.error("Could not get UserRecordings");
+				return Optional.empty();
+			}
+			return Optional.ofNullable(recordings.getPayload());
 		}
 		catch (IOException | NullPointerException e) {
 			LOG.error(e.getMessage(), e);
@@ -193,7 +202,8 @@ public class LbService implements ListenBrainzService {
 			options.put(QueryParameter.COUNT, String.valueOf(count));
 
 			UserReleases releases = lbEndPoints.getUserReleases("1/stats/user/" + username + "/recordings", options)
-					.execute().body();
+				.execute()
+				.body();
 			if (releases != null) {
 				ret.addAll(releases.getPayload().getRecordings());
 			}
@@ -250,8 +260,9 @@ public class LbService implements ListenBrainzService {
 		try {
 			SubmitListensNow submitListens = new SubmitListensNow(SubmitListensNow.ListenType.PLAYING_NOW,
 					submitListensNows);
-			SubmitResponse response = lbEndPoints.submitListenNow(buildAuthTokenHeader(), submitListens).execute()
-					.body();
+			SubmitResponse response = lbEndPoints.submitListenNow(buildAuthTokenHeader(), submitListens)
+				.execute()
+				.body();
 			LOG.trace("Scrobble response: {} ", response);
 		}
 		catch (IOException e) {
@@ -280,8 +291,9 @@ public class LbService implements ListenBrainzService {
 		}
 		try {
 			SubmitListens submitListens = new SubmitListens(listenType, listens);
-			SubmitResponse response = lbEndPoints.submitListenNow(buildAuthTokenHeader(), submitListens).execute()
-					.body();
+			SubmitResponse response = lbEndPoints.submitListenNow(buildAuthTokenHeader(), submitListens)
+				.execute()
+				.body();
 			LOG.trace("Scrobble response: {} ", response);
 		}
 		catch (IOException e) {
@@ -290,11 +302,13 @@ public class LbService implements ListenBrainzService {
 	}
 
 	private Retrofit buildRetrofit() {
-		return new Retrofit.Builder().baseUrl(ROOT_URL).addConverterFactory(GsonConverterFactory.create())
-				.client(new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor())
-						.addInterceptor(new RateLimitInterceptor())
-						.addNetworkInterceptor(chain -> chain.proceed(chain.request())).build())
-				.build();
+		return new Retrofit.Builder().baseUrl(ROOT_URL)
+			.addConverterFactory(GsonConverterFactory.create())
+			.client(new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor())
+				.addInterceptor(new RateLimitInterceptor())
+				.addNetworkInterceptor(chain -> chain.proceed(chain.request()))
+				.build())
+			.build();
 	}
 
 	private String buildAuthTokenHeader() {
