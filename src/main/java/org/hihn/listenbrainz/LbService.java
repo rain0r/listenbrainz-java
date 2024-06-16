@@ -5,30 +5,35 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hihn.listenbrainz.api.LbEndPoints;
 import org.hihn.listenbrainz.api.QueryParameter;
+import org.hihn.listenbrainz.api.v2.Core;
+import org.hihn.listenbrainz.api.v2.Statistics;
 import org.hihn.listenbrainz.interceptor.LoggingInterceptor;
 import org.hihn.listenbrainz.interceptor.RateLimitInterceptor;
 import org.hihn.listenbrainz.lb.*;
 import org.hihn.listenbrainz.lb.SubmitListens.ListenType;
 import org.hihn.listenbrainz.model.ArtistType;
 import org.hihn.listenbrainz.model.TimeRange;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
 import java.util.*;
 
+import static org.hihn.listenbrainz.Utils.buildRetrofit;
+
 /**
  * Service that provides methods to communicate with the ListenBrainz api.
  */
-public class LbService implements ListenBrainzService {
+public class LbService implements ListenBrainzService, Statistics {
 
-	private static final Logger LOG = LogManager.getLogger(LoggingInterceptor.class);
-
-	public static final String ROOT_URL = "https://api.listenbrainz.org";
+	private static final Logger LOG = LogManager.getLogger(LbService.class);
 
 	public static final int DEFAULT_COUNT = 25;
 
 	private final LbEndPoints lbEndPoints;
+
+	private final Core core;
 
 	private ListenBrainzToken token;
 
@@ -40,7 +45,10 @@ public class LbService implements ListenBrainzService {
 
 	public LbService(String authToken) {
 		Retrofit retrofit = buildRetrofit();
+
 		lbEndPoints = retrofit.create(LbEndPoints.class);
+		core = retrofit.create(Core.class);
+
 		if (authToken.equals("")) {
 			LOG.debug("No token provided - executing only unauthenticated API calls.");
 		}
@@ -220,7 +228,7 @@ public class LbService implements ListenBrainzService {
 			throw new IllegalStateException("No auth token set - can't post data to ListenBrainz.");
 		}
 		try {
-			ListenBrainzToken token = lbEndPoints.validateToken(buildAuthTokenHeader()).execute().body();
+			ListenBrainzToken token = core.validateToken(buildAuthTokenHeader()).execute().body();
 			setToken(token);
 			return token != null && token.isValid();
 		}
@@ -301,15 +309,7 @@ public class LbService implements ListenBrainzService {
 		}
 	}
 
-	private Retrofit buildRetrofit() {
-		return new Retrofit.Builder().baseUrl(ROOT_URL)
-			.addConverterFactory(GsonConverterFactory.create())
-			.client(new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor())
-				.addInterceptor(new RateLimitInterceptor())
-				.addNetworkInterceptor(chain -> chain.proceed(chain.request()))
-				.build())
-			.build();
-	}
+
 
 	private String buildAuthTokenHeader() {
 		return "Token " + getAuthToken();
@@ -321,6 +321,12 @@ public class LbService implements ListenBrainzService {
 		submitListen.setListenedAt(listenedAt);
 		submitListen.setTrackMetadata(metadata);
 		return submitListen;
+	}
+
+
+	@Override
+	public Call<Object> getTopArtistsForUser(String userName) {
+		return null;
 	}
 
 	private SubmitListensTrackMetadata buildSubmitListensTrackMetadata(String artist, String title, String album) {

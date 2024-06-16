@@ -11,8 +11,7 @@ import java.util.Map;
  */
 public interface LbEndPoints {
 
-	@GET("/1/validate-token")
-	Call<ListenBrainzToken> validateToken(@Header("Authorization") String token);
+
 
 	@GET()
 	Call<ListensRoot> getListens(@Url String url, @QueryMap Map<String, String> options);
