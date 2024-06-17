@@ -1,21 +1,17 @@
 package org.hihn.listenbrainz;
 
-import okhttp3.OkHttpClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hihn.listenbrainz.api.LbEndPoints;
 import org.hihn.listenbrainz.api.QueryParameter;
 import org.hihn.listenbrainz.api.v2.Core;
-import org.hihn.listenbrainz.api.v2.Statistics;
-import org.hihn.listenbrainz.interceptor.LoggingInterceptor;
-import org.hihn.listenbrainz.interceptor.RateLimitInterceptor;
+import org.hihn.listenbrainz.api.v2.StatsEndpoints;
 import org.hihn.listenbrainz.lb.*;
 import org.hihn.listenbrainz.lb.SubmitListens.ListenType;
 import org.hihn.listenbrainz.model.ArtistType;
 import org.hihn.listenbrainz.model.TimeRange;
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -25,7 +21,7 @@ import static org.hihn.listenbrainz.Utils.buildRetrofit;
 /**
  * Service that provides methods to communicate with the ListenBrainz api.
  */
-public class LbService implements ListenBrainzService, Statistics {
+public class LbService implements ListenBrainzService, StatsEndpoints {
 
 	private static final Logger LOG = LogManager.getLogger(LbService.class);
 
@@ -325,7 +321,7 @@ public class LbService implements ListenBrainzService, Statistics {
 
 
 	@Override
-	public Call<Object> getTopArtistsForUser(String userName) {
+	public Call<Object> topArtistsForUser(String userName) {
 		return null;
 	}
 

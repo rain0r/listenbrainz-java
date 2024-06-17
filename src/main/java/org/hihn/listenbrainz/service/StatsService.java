@@ -7,11 +7,13 @@ import retrofit2.Retrofit;
 
 import static org.hihn.listenbrainz.Utils.buildRetrofit;
 
-public class LbStatistics {
+public class StatsService {
 
     private static final Logger LOG = LogManager.getLogger(LoggingInterceptor.class);
 
-    public LbStatistics() {
+    public StatsService() {
         Retrofit retrofit = buildRetrofit();
     }
+
+    public void geTtopArtistsForUser(){}
 }
