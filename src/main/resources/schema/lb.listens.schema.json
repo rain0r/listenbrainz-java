@@ -4,7 +4,7 @@
   "definitions": {
     "ListensRoot": {
       "type": "object",
-      "description" : "The element is placed at the top-most level of the JSON document.",
+      "description": "The element is placed at the top-most level of the JSON document.",
       "additionalProperties": false,
       "properties": {
         "payload": {
@@ -18,7 +18,7 @@
     },
     "Listens": {
       "type": "object",
-      "description" : "The element is placed at the top-most level of the JSON document.",
+      "description": "The element is placed at the top-most level of the JSON document.",
       "additionalProperties": false,
       "properties": {
         "count": {
@@ -46,7 +46,7 @@
       "title": "Listens"
     },
     "Listen": {
-      "description" : "The Listen class represents a Listen from ListenBrainz.",
+      "description": "The Listen class represents a Listen from ListenBrainz.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -161,7 +161,6 @@
         "artist_mbid",
         "media_player",
         "recording_mbid",
-        "release_mbid",
         "release_mbid",
         "submission_client",
         "submission_client_version",

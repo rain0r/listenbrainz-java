@@ -11,8 +11,6 @@ import java.util.Map;
  */
 public interface LbEndPoints {
 
-
-
 	@GET()
 	Call<ListensRoot> getListens(@Url String url, @QueryMap Map<String, String> options);
 

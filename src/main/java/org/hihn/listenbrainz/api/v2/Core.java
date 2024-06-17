@@ -7,8 +7,7 @@ import retrofit2.http.Header;
 
 public interface Core {
 
-    @GET("/1/validate-token")
-    Call<ListenBrainzToken> validateToken(@Header("Authorization") String token);
-
+	@GET("/1/validate-token")
+	Call<ListenBrainzToken> validateToken(@Header("Authorization") String token);
 
 }

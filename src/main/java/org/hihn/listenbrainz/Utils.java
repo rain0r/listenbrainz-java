@@ -10,13 +10,14 @@ import static org.hihn.listenbrainz.Constants.ROOT_URL;
 
 public class Utils {
 
-    public static Retrofit buildRetrofit() {
-        return new Retrofit.Builder().baseUrl(ROOT_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor())
-                        .addInterceptor(new RateLimitInterceptor())
-                        .addNetworkInterceptor(chain -> chain.proceed(chain.request()))
-                        .build())
-                .build();
-    }
+	public static Retrofit buildRetrofit() {
+		return new Retrofit.Builder().baseUrl(ROOT_URL)
+			.addConverterFactory(GsonConverterFactory.create())
+			.client(new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor())
+				.addInterceptor(new RateLimitInterceptor())
+				.addNetworkInterceptor(chain -> chain.proceed(chain.request()))
+				.build())
+			.build();
+	}
+
 }
