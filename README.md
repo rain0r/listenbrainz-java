@@ -1,5 +1,11 @@
 # listenbrainz-java
 
+---
+
+Deprecated. Please use [listenbrainz-java](https://github.com/rain0r/listenbrainz-java)
+
+---
+
 This is a java wrapper for the the [ListenBrainz API](https://listenbrainz.readthedocs.io/en/latest/).
 
 It supports retrieving and submitting data (_scrobbling_).
