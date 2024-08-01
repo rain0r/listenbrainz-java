@@ -2,7 +2,7 @@
 
 ---
 
-Deprecated. Please use [listenbrainz-java](https://github.com/rain0r/listenbrainz-java)
+Deprecated. Please use [listenbrainz-client](https://github.com/rain0r/listenbrainz-client)
 
 ---
 
